@@ -16,7 +16,7 @@ class NetworkStack(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # Create VPC
+        
         vpc = Vpc(self, "MyVpc", max_azs=2)
 
         # Create public subnet in first availability zone
@@ -46,7 +46,6 @@ class ServerStack(core.Stack):
         # Security group for web servers
         web_server_sg = SecurityGroup(self, "WebServerSG", vpc=vpc)
         web_server_sg.add_ingress_rule(Peer.any_ipv4(), Port.tcp(80), "Allow inbound HTTP traffic")
-
         # Security group for RDS instance
         rds_sg = SecurityGroup(self, "RDSSG", vpc=vpc)
         rds_sg.add_ingress_rule(web_server_sg, Port.tcp(3306), "Allow inbound MySQL traffic from web servers")
